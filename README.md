@@ -1,6 +1,6 @@
 # Smart-Counter
 A Minecraft mod that counts redstoneticks and gameticks for you.
-  - DëvJG#3989
+  ~ DëvJG#3989
 
 ## Download and How To Use
 The download of the jar is here: https://www.curseforge.com/minecraft/mc-mods/tick-counter  
@@ -14,6 +14,7 @@ For any Minecraft Cannon related: https://discord.gg/hk8W88h
 ## Change Log
   - Made Smart-Counter Open source
   - Performance improvements
+  - Now supports multiple versions (1.8-1.8.9)
   - Centered string that gets rendered when activated
   - Changed colour of string to make it easier to read against certain surfaces
 
