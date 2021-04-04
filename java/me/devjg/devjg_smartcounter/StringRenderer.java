@@ -23,7 +23,5 @@ public class StringRenderer extends Gui {
       fontRenderer.drawString(String.format(ticksText, rt, rt * 2, rt / 10),
           (width - (float) textWidth+8) / 2, height - 40, 0x55b9f3, true);
     }
-    if (SmartCounter.currentRt < 0)
-      SmartCounter.clear();
   }
 }
