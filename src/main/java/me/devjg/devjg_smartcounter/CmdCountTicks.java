@@ -8,36 +8,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CmdCountTicks extends CommandBase {
-    List<String> alias = new ArrayList<String>();
+  List<String> aliases = new ArrayList<String>();
 
-    CmdCountTicks() {
-        this.alias.add("ct");
-        this.alias.add("countticks");
-        this.alias.add("counttick");
-    }
+  CmdCountTicks() {
+    this.aliases.add("ct");
+    this.aliases.add("smartcounter");
+  }
 
-    @Override
-    public String getCommandName() {
-        return "countticks";
-    }
+  @Override
+  public String getCommandName() {
+    return "tickcounter";
+  }
 
-    @Override
-    public String getCommandUsage(ICommandSender sender) {
-        return "/countticks";
-    }
+  @Override
+  public String getCommandUsage(ICommandSender sender) {
+    return "/tickcounter";
+  }
 
-    @Override
-    public List<String> getCommandAliases(){
-        return this.alias;
-    }
+  @Override
+  public List<String> getCommandAliases() {
+    return this.aliases;
+  }
 
-    @Override
-    public void processCommand(ICommandSender sender, String[] args) throws CommandException {
-        SmartCounter.isEnabled = !SmartCounter.isEnabled;
-    }
+  @Override
+  public void processCommand(ICommandSender sender, String[] args) throws CommandException {
+    SmartCounter.isEnabled = !SmartCounter.isEnabled;
+  }
 
-    @Override
-    public int getRequiredPermissionLevel(){
-        return -1;
-    }
+  @Override
+  public int getRequiredPermissionLevel() {
+    return -1;
+  }
 }

@@ -1,16 +1,16 @@
 [
-{
-  "modid": "devjg_smartcounter",
-  "name": "Smart-Counter",
-  "description": "An update and improved version of my previous "TickCounter" mod".",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
-  "url": "https://discord.gg/b35rQvS",
-  "updateUrl": "",
-  "authorList": ["DevJG"],
-  "credits": "",
-  "logoFile": "",
-  "screenshots": [],
-  "dependencies": []
-}
+  {
+    "modid": "devjg_smartcounter",
+    "name": "Smart-Counter",
+    "description": "An update and improved version of my previous \"TickCounter\" mod.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "https://discord.gg/b35rQvS",
+    "updateUrl": "",
+    "authorList": ["DevJG"],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
 ]
