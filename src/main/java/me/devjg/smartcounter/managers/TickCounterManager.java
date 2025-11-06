@@ -1,42 +1,50 @@
 package me.devjg.smartcounter.managers;
 
 import me.devjg.smartcounter.Utils;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.*;
 
+@Environment(EnvType.CLIENT)
 public class TickCounterManager {
-    public static boolean enabled = false;
-    private static float countedTicks = 0;
-    private static boolean consecutivePistons = false;
+    private boolean enabled = false;
+    private boolean consecutivePistons = false;
 
-    public static boolean toggle() {
+    private float countedTicks = 0f;
+
+    public boolean toggle() {
         enabled = !enabled;
 
         if (!enabled)
-            tickCounterDisabled();
+            onDisable();
 
         return enabled;
     }
 
-    private static void tickCounterDisabled() {
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    private void onDisable() {
         resetTickCounter();
     }
 
-    private static void resetTickCounter() {
+    private void resetTickCounter() {
         consecutivePistons = false;
         countedTicks = 0;
     }
 
-    public static void explicitResetTicks() {
+    public void explicitResetTicks() {
         Utils.addChatMessage("Cleared counted ticks");
         resetTickCounter();
     }
 
-    public static void countedNewTicks(BlockState blockState, Block blockInstance) {
+    public void countedNewTicks(BlockState blockState, Block blockInstance) {
         countedTicks += countTicks(blockState, blockInstance);
         addTicksChatMessage();
     }
 
-    private static int countTicks(BlockState blockState, Block hitBlock) {
+    private int countTicks(BlockState blockState, Block hitBlock) {
         if (hitBlock instanceof PistonBlock) {
             boolean wasConsecutive = consecutivePistons;
             consecutivePistons = true;
@@ -50,13 +58,16 @@ public class TickCounterManager {
         else if (hitBlock instanceof ComparatorBlock || hitBlock instanceof ObserverBlock || hitBlock instanceof RedstoneTorchBlock)
             return 2;
 
-        Utils.addChatMessage(blockState.getBlock().getClass().getSimpleName());
         return 0;
     }
 
-    private static void addTicksChatMessage() {
+    private void addTicksChatMessage() {
+        float redstoneTicks = countedTicks / 2.0f;
+        float gameTicks = countedTicks;
+        float irlSeconds = countedTicks / 20.0f;
+
         Utils.addChatMessage(
-            "RTs: %.1f | GTs: %.1f | S: %.2f".formatted(countedTicks/2, countedTicks, countedTicks/20)
+            "RTs: %.1f | GTs: %.1f | S: %.2f".formatted(redstoneTicks, gameTicks, irlSeconds)
         );
     }
 }

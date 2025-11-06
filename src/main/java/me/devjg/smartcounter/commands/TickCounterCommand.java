@@ -1,6 +1,7 @@
 package me.devjg.smartcounter.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
+import me.devjg.smartcounter.SmartCounter;
 import me.devjg.smartcounter.Utils;
 import me.devjg.smartcounter.managers.TickCounterManager;
 import net.fabricmc.api.EnvType;
@@ -18,7 +19,8 @@ public class TickCounterCommand {
     }
 
     private static int toggleTickCounter(ServerCommandSource source) {
-        boolean enabled = TickCounterManager.toggle();
+        TickCounterManager tcm = SmartCounter.get().getTickCounterManager();
+        boolean enabled = tcm.toggle();
 
         if (enabled)
             Utils.addChatMessage("§aEnabled Tick Counter");
