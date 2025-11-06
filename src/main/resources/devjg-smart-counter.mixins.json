@@ -1,0 +1,18 @@
+{
+    "required": true,
+    "package": "me.devjg.smartcounter.mixin",
+    "compatibilityLevel": "JAVA_21",
+    "mixins": [
+        "DefaultRedstoneControllerMixin",
+        "MinecraftClientMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    },
+    "overwrites": {
+        "requireAnnotations": true
+    },
+    "client": [
+        "MinecraftClientMixin"
+    ]
+}

@@ -1,0 +1,29 @@
+{
+	"schemaVersion": 1,
+	"id": "devjg-smart-counter",
+	"version": "${version}",
+	"name": "Smart Counter",
+	"description": "A mod that counts game-ticks, redstone ticks and real-time seconds from redstone components for you",
+	"authors": [
+		"DevJG"
+	],
+	"contact": {
+		"homepage": "https://discord.gg/b35rQvS"
+	},
+	"license": "MPL-2.0",
+	"icon": "assets/devjg-smart-counter/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"main": [
+			"me.devjg.smartcounter.SmartCounter"
+		]
+	},
+	"mixins": [
+		"devjg-smart-counter.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.17.0",
+		"minecraft": ">=1.21.9 <=1.21.10",
+		"java": ">=21"
+	}
+}
