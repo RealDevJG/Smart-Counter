@@ -1,9 +1,11 @@
 package me.devjg.smartcounter;
 
+import me.devjg.smartcounter.commands.NodeCounterCommand;
 import me.devjg.smartcounter.commands.TickCounterCommand;
+import me.devjg.smartcounter.managers.NodeCounterManager;
 import me.devjg.smartcounter.managers.TickCounterManager;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +16,7 @@ public class SmartCounter implements ModInitializer {
     private static SmartCounter INSTANCE;
 
     public TickCounterManager tickCounterManager;
+    public NodeCounterManager nodeCounterManager;
 
     @Override
     public void onInitialize() {
@@ -21,9 +24,11 @@ public class SmartCounter implements ModInitializer {
 
         INSTANCE = this;
         tickCounterManager = new TickCounterManager();
+        nodeCounterManager = new NodeCounterManager();
 
-        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, t) -> {
+        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             TickCounterCommand.register(dispatcher, registryAccess);
+            NodeCounterCommand.register(dispatcher, registryAccess);
         });
     }
 
@@ -31,7 +36,15 @@ public class SmartCounter implements ModInitializer {
         return INSTANCE;
     }
 
+    public boolean isAnyManagerActive() {
+        return tickCounterManager.isEnabled() || nodeCounterManager.isEnabled();
+    }
+
     public TickCounterManager getTickCounterManager() {
         return tickCounterManager;
+    }
+
+    public NodeCounterManager getNodeCounterManager() {
+        return nodeCounterManager;
     }
 }

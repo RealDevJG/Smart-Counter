@@ -1,9 +1,11 @@
 package me.devjg.smartcounter.managers;
 
+import me.devjg.smartcounter.SmartCounter;
 import me.devjg.smartcounter.Utils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.*;
+import net.minecraft.util.hit.BlockHitResult;
 
 @Environment(EnvType.CLIENT)
 public class TickCounterManager {
@@ -12,21 +14,31 @@ public class TickCounterManager {
 
     private float countedTicks = 0f;
 
-    public boolean toggle() {
+    public void toggle() {
         enabled = !enabled;
 
-        if (!enabled)
+        if (enabled)
+            onEnable();
+        else
             onDisable();
-
-        return enabled;
     }
 
     public boolean isEnabled() {
         return enabled;
     }
 
+    private void onEnable() {
+        NodeCounterManager ncm = SmartCounter.get().nodeCounterManager;
+
+        if (ncm.isEnabled())
+            ncm.toggle();
+
+        Utils.addChatMessage("§aEnabled Tick Counter");
+    }
+
     private void onDisable() {
         resetTickCounter();
+        Utils.addChatMessage("§cDisabled Tick Counter");
     }
 
     private void resetTickCounter() {
@@ -34,18 +46,21 @@ public class TickCounterManager {
         countedTicks = 0;
     }
 
-    public void explicitResetTicks() {
-        Utils.addChatMessage("Cleared counted ticks");
+    public void explicitResetData() {
         resetTickCounter();
+        Utils.addChatMessage("Cleared counted ticks");
     }
 
-    public void countedNewTicks(BlockState blockState, Block blockInstance) {
-        countedTicks += countTicks(blockState, blockInstance);
-        addTicksChatMessage();
+    public void countedNewTicks(BlockHitResult blockhitResult, BlockState blockState) {
+        int addedTicks = countTicks(blockState, blockState.getBlock());
+        countedTicks += addedTicks;
+
+        if (addedTicks > 0)
+            addTicksChatMessage();
     }
 
-    private int countTicks(BlockState blockState, Block hitBlock) {
-        if (hitBlock instanceof PistonBlock) {
+    private int countTicks(BlockState blockState, Block blockInstance) {
+        if (blockInstance instanceof PistonBlock) {
             boolean wasConsecutive = consecutivePistons;
             consecutivePistons = true;
             return wasConsecutive ? 3 : 2;
@@ -53,9 +68,9 @@ public class TickCounterManager {
 
         consecutivePistons = false;
 
-        if (hitBlock instanceof RepeaterBlock)
+        if (blockInstance instanceof RepeaterBlock)
             return blockState.get(RepeaterBlock.DELAY) * 2;
-        else if (hitBlock instanceof ComparatorBlock || hitBlock instanceof ObserverBlock || hitBlock instanceof RedstoneTorchBlock)
+        else if (blockInstance instanceof ComparatorBlock || blockInstance instanceof ObserverBlock || blockInstance instanceof RedstoneTorchBlock)
             return 2;
 
         return 0;

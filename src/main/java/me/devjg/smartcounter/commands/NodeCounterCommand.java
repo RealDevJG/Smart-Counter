@@ -2,7 +2,7 @@ package me.devjg.smartcounter.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import me.devjg.smartcounter.SmartCounter;
-import me.devjg.smartcounter.managers.TickCounterManager;
+import me.devjg.smartcounter.managers.NodeCounterManager;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
@@ -10,16 +10,16 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.command.CommandRegistryAccess;
 
 @Environment(EnvType.CLIENT)
-public class TickCounterCommand {
+public class NodeCounterCommand {
     public static void register(CommandDispatcher<FabricClientCommandSource> dispatcher, CommandRegistryAccess commandRegistryAccess) {
         dispatcher.register(
-            ClientCommandManager.literal("tickcounter").executes(context -> toggleTickCounter(context.getSource()))
+            ClientCommandManager.literal("nodecounter").executes(context -> toggleNodeCounter(context.getSource()))
         );
     }
 
-    private static int toggleTickCounter(FabricClientCommandSource source) {
-        TickCounterManager tcm = SmartCounter.get().getTickCounterManager();
-        tcm.toggle();
+    private static int toggleNodeCounter(FabricClientCommandSource source) {
+        NodeCounterManager ncm = SmartCounter.get().getNodeCounterManager();
+        ncm.toggle();
 
         return 1;
     }
