@@ -1,12 +1,12 @@
 # Smart-Counter
-A Minecraft fabric mod that counts redstone ticks, game ticks, and real-life second delays of redstone component lines for you.
+A Minecraft fabric mod that counts redstone ticks, game ticks, and real-life second delays of redstone component lines for you.  
 
 ## How to use
 ### Tick Counter
 1. Type `/tickcounter` in the chat to enable the **tick** counter. All interactions (right-click and left-click) with blocks are disabled so you don't accidentally change repeater ticks while in this mode.  
-2. Right-click on any redstone component to count its tick delay. You can click on multiple consecutive components to add up their ticks together. Special-cases such as two consecutive pistons resulting in an extra game tick are considered.
+2. Right-click on any redstone component to count its tick delay. You can click on multiple consecutive components to add up their ticks together. Special-cases such as two consecutive pistons resulting in an extra game tick are considered.  
 3. Left-click to reset the tick counter back to 0 or...  
-4. Type `/tickcounter` again to reset the counter to 0, disable the tick counter, and re-enable block interactions.
+4. Type `/tickcounter` again to reset the counter to 0, disable the tick counter, and re-enable block interactions.  
 
 ### Node Counter
 1. Type `/nodecounter` in the chat to enable the **node** counter. All interactions (right-click and left-click) with blocks are disabled so you don't accidentally change repeater ticks while in this mode.  
