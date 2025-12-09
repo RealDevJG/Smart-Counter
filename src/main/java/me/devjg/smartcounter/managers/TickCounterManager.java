@@ -4,8 +4,10 @@ import me.devjg.smartcounter.SmartCounter;
 import me.devjg.smartcounter.Utils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.*;
-import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.piston.PistonBaseBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 
 @Environment(EnvType.CLIENT)
 public class TickCounterManager {
@@ -60,7 +62,7 @@ public class TickCounterManager {
     }
 
     private int countTicks(BlockState blockState, Block blockInstance) {
-        if (blockInstance instanceof PistonBlock) {
+        if (blockInstance instanceof PistonBaseBlock) {
             boolean wasConsecutive = consecutivePistons;
             consecutivePistons = true;
             return wasConsecutive ? 3 : 2;
@@ -69,7 +71,7 @@ public class TickCounterManager {
         consecutivePistons = false;
 
         if (blockInstance instanceof RepeaterBlock)
-            return blockState.get(RepeaterBlock.DELAY) * 2;
+            return blockState.getValue(RepeaterBlock.DELAY) * 2;
         else if (blockInstance instanceof ComparatorBlock || blockInstance instanceof ObserverBlock || blockInstance instanceof RedstoneTorchBlock)
             return 2;
 

@@ -5,12 +5,12 @@ import me.devjg.smartcounter.Utils;
 import me.devjg.smartcounter.data.NodeData;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.RedstoneWireBlock;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ServerInfo;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.RedStoneWireBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +24,7 @@ public class NodeCounterManager {
     private final Map<BlockPos, NodeData> nodes = new HashMap<>();
 
     public void toggle() {
-        ServerInfo server = MinecraftClient.getInstance().getCurrentServerEntry();
+        ServerData server = Minecraft.getInstance().getCurrentServer();
         if (server != null) {
             Utils.addChatMessage("§cNode counter is unavailable on servers. It is singleplayer only due to the inaccuracies of measuring server-side ticks from the client. \n§a/tickcounter is still available on servers");
             return;
@@ -65,8 +65,8 @@ public class NodeCounterManager {
     }
 
     public void addedNewNode(BlockHitResult blockHitResult, BlockState blockState) {
-        if (blockState.getBlock() instanceof RedstoneWireBlock) {
-            int powerLevel = blockState.get(RedstoneWireBlock.POWER);
+        if (blockState.getBlock() instanceof RedStoneWireBlock) {
+            int powerLevel = blockState.getValue(RedStoneWireBlock.POWER);
             int nodeId = nodes.size() + 1;
 
             BlockPos blockPos = blockHitResult.getBlockPos();
@@ -92,10 +92,10 @@ public class NodeCounterManager {
 
     public void resetDeltas() {
         tickDelta = 0L;
-        firstActivation = MinecraftClient.getInstance().world.getTime();
+        firstActivation = Minecraft.getInstance().level.getGameTime();
     }
 
     public void changeDelta() {
-        tickDelta = MinecraftClient.getInstance().world.getTime() - firstActivation;
+        tickDelta = Minecraft.getInstance().level.getGameTime() - firstActivation;
     }
 }

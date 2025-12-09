@@ -3,13 +3,12 @@ package me.devjg.smartcounter.mixin;
 import me.devjg.smartcounter.SmartCounter;
 import me.devjg.smartcounter.managers.NodeCounterManager;
 import me.devjg.smartcounter.managers.TickCounterManager;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -22,15 +21,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 
-@Mixin(MinecraftClient.class)
+@Mixin(Minecraft.class)
 public abstract class MinecraftClientMixin {
-    @Shadow @Nullable public HitResult crosshairTarget;
-    @Shadow @Nullable public ClientWorld world;
+    @Shadow @Nullable public ClientLevel level;
+    @Shadow @Nullable public HitResult hitResult;
 
     @Unique private long lastClickTimeNanos = -1L;
     @Unique private static final long CLICK_DELAY_NANOS = TimeUnit.MILLISECONDS.toNanos(130);
 
-    @Inject(method = "doAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/hit/BlockHitResult;getBlockPos()Lnet/minecraft/util/math/BlockPos;"), cancellable = true)
+    @Inject(method = "startAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/BlockHitResult;getBlockPos()Lnet/minecraft/core/BlockPos;"), cancellable = true)
     private void onDoAttack(CallbackInfoReturnable<Boolean> cir) {
        if (SmartCounter.get().isAnyManagerActive() && hasntClickedTooFast(cir)) {
             resetActiveManagerData();
@@ -38,7 +37,7 @@ public abstract class MinecraftClientMixin {
         }
     }
 
-    @Inject(method = "handleBlockBreaking", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "continueAttack", at = @At("HEAD"), cancellable = true)
     private void onHandleBlockBreaking(boolean breaking, CallbackInfo ci) {
         if (SmartCounter.get().isAnyManagerActive() && breaking && hasntClickedTooFast(ci)) {
             resetActiveManagerData();
@@ -46,7 +45,7 @@ public abstract class MinecraftClientMixin {
         }
     }
 
-    @Inject(method = "doItemUse", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "startUseItem", at = @At("HEAD"), cancellable = true)
     private void onDoItemUse(CallbackInfo ci) {
         TickCounterManager tcm = SmartCounter.get().getTickCounterManager();
         NodeCounterManager ncm = SmartCounter.get().getNodeCounterManager();
@@ -77,14 +76,12 @@ public abstract class MinecraftClientMixin {
 
     @Unique
     private void processIfValidHitResult(BiConsumer<BlockHitResult, BlockState> action) {
-        if (world == null)
+        if (level == null)
             return;
-
-        HitResult hitResult = crosshairTarget;
 
         if (hitResult instanceof BlockHitResult blockHitResult) {
             BlockPos blockPos = blockHitResult.getBlockPos();
-            BlockState blockState = world.getBlockState(blockPos);
+            BlockState blockState = level.getBlockState(blockPos);
 
             action.accept(blockHitResult, blockState);
         }

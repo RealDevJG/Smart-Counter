@@ -1,16 +1,16 @@
 package me.devjg.smartcounter;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 
 public class Utils {
     public static final String CHAT_PREFIX = "§7[§eSmartCounter§7]§r ";
 
     public static void addChatMessage(String message) {
-        MinecraftClient client = MinecraftClient.getInstance();
+        Minecraft client = Minecraft.getInstance();
 
         client.execute(() -> {
-            client.inGameHud.getChatHud().addMessage(Text.of(Utils.CHAT_PREFIX + message));
+            client.gui.getChat().addMessage(Component.nullToEmpty(Utils.CHAT_PREFIX + message));
         });
     }
 }
