@@ -5,16 +5,15 @@ import me.devjg.smartcounter.SmartCounter;
 import me.devjg.smartcounter.managers.NodeCounterManager;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.commands.CommandBuildContext;
 
 @Environment(EnvType.CLIENT)
 public class NodeCounterCommand {
     public static void register(CommandDispatcher<FabricClientCommandSource> dispatcher, CommandBuildContext commandRegistryAccess) {
-        dispatcher.register(
-            ClientCommandManager.literal("nodecounter").executes(context -> toggleNodeCounter(context.getSource()))
-        );
+        var command = ClientCommands.literal("nodecounter").executes(context -> toggleNodeCounter(context.getSource()));
+        dispatcher.register(command);
     }
 
     private static int toggleNodeCounter(FabricClientCommandSource source) {

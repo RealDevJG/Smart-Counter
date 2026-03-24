@@ -10,7 +10,7 @@ public class Utils {
         Minecraft client = Minecraft.getInstance();
 
         client.execute(() -> {
-            client.gui.getChat().addMessage(Component.nullToEmpty(Utils.CHAT_PREFIX + message));
+            client.gui.getChat().addClientSystemMessage(Component.nullToEmpty(Utils.CHAT_PREFIX + message));
         });
     }
 }

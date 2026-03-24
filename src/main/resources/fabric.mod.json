@@ -22,9 +22,9 @@
 		"devjg-smart-counter.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.17.0",
-		"minecraft": ">=1.21.11",
-		"java": ">=21",
-		"fabric-api": "*"
+		"fabricloader": ">=0.18.4",
+		"minecraft": "26.1-rc.3",
+		"java": ">=25",
+		"fabric-api": ">=0.144.0+26.1"
 	}
 }
