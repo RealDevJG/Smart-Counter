@@ -6,7 +6,7 @@ import me.devjg.smartcounter.data.NodeData;
 import me.devjg.smartcounter.managers.NodeCounterManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.RedStoneWireBlock;
+import net.minecraft.world.level.block.RedstoneWireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.redstone.DefaultRedstoneWireEvaluator;
 import net.minecraft.world.level.redstone.Orientation;
@@ -32,7 +32,7 @@ public class DefaultRedstoneControllerMixin {
 			NodeData nodeData = nodes.get(pos);
 			int nodeId = nodeData.id();
 
-			if (Objects.equals(nodeData.powerLevel(), state.getValue(RedStoneWireBlock.POWER))) {
+			if (Objects.equals(nodeData.powerLevel(), state.getValue(RedstoneWireBlock.POWER))) {
 				if (nodeId == 1)
 					ncm.resetDeltas();
 				else

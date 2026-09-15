@@ -8,7 +8,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.RedStoneWireBlock;
+import net.minecraft.world.level.block.RedstoneWireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
@@ -65,8 +65,8 @@ public class NodeCounterManager {
     }
 
     public void addedNewNode(BlockHitResult blockHitResult, BlockState blockState) {
-        if (blockState.getBlock() instanceof RedStoneWireBlock) {
-            int powerLevel = blockState.getValue(RedStoneWireBlock.POWER);
+        if (blockState.getBlock() instanceof RedstoneWireBlock) {
+            int powerLevel = blockState.getValue(RedstoneWireBlock.POWER);
             int nodeId = nodes.size() + 1;
 
             BlockPos blockPos = blockHitResult.getBlockPos();
